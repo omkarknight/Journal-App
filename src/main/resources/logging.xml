@@ -1,0 +1,26 @@
+<configuration>
+
+    <apender name = "myConsoleAppender" class ="">
+        <encoder>
+            <pattern>
+
+            </pattern>
+        </encoder>
+
+    </apender>
+
+    <apender name = "myFileAppender" class="">
+
+        <file>
+            journal.log
+        </file>
+
+    </apender>
+
+    <root level ="INFO">
+        <appender-ref ref="myConsoleAppender"/>
+        <appender-ref ref="myFileAppender"/>
+    </root>
+
+
+</configuration>
