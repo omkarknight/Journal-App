@@ -4,6 +4,8 @@ package com.example.myspringboot.Controller;
 import com.example.myspringboot.Entity.User;
 import com.example.myspringboot.Service.JournalEntryService;
 import com.example.myspringboot.Service.UserService;
+import com.example.myspringboot.Service.WeatherService;
+import com.example.myspringboot.api.response.WeatherResponse;
 import jakarta.validation.Valid;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class UserController {
     private JournalEntryService journalEntryService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private WeatherService weatherService;
 
     @GetMapping("/id/{id}")
     public ResponseEntity<?> getUserById(@PathVariable ObjectId id)
@@ -83,6 +87,44 @@ public class UserController {
 
         userService.deleteByName(username);
         return ResponseEntity.status(200).body(Map.of("message", "User deleted","username",username));
+    }
+
+    @DeleteMapping("{userId}")
+    public ResponseEntity<?> deleteUserId(@PathVariable("userId") ObjectId uid){
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userService.findByUserName(username);
+
+        if(user == null){
+            return ResponseEntity.status(404).body(Map.of("message", "User not found with username ","username :",username));
+        }
+
+        if(!user.getId().equals(uid)){
+            return ResponseEntity.status(401).body(Map.of("message","You are not allowed to delete this user with " + username));
+        }
+
+        userService.deleteById(uid);
+        return ResponseEntity.status(200).body(Map.of("message","User deleted successfully"));
+
+    }
+
+    @GetMapping
+    public ResponseEntity<?> greetings(){
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        WeatherResponse weatherResponse = weatherService.getWeather("Mumbai");
+
+        String greetings = "";
+
+        if(weatherResponse != null)
+        {
+            greetings = "Weather feels like " + weatherResponse.getCurrent().getFeelslike();
+        }
+        return ResponseEntity.status(200).body("Hi "+ username + greetings);
+
+
     }
 
 }
