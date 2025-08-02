@@ -2,16 +2,17 @@ package com.example.myspringboot.Service;
 
 import com.example.myspringboot.api.response.WeatherResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-@Component
+@Service
 public class WeatherService {
 
-    private static final String apiKey = "ef2d301f0065a38311206e78fc8756db";
+    @Value("${weather.api.key}")
+    private String apiKey;
 
     public static final String API = "https://api.weatherstack.com/current?access_key=API_KEY&query=CITY";
 
@@ -20,6 +21,11 @@ public class WeatherService {
 
 
     public WeatherResponse getWeather(String city){
+
+        if(apiKey == null || apiKey.isEmpty())
+        {
+            throw new IllegalStateException("API key is not found or not put");
+        }
 
        String finalAPI = API.replace("CITY",city).replace("API_KEY",apiKey);
 

@@ -2,7 +2,6 @@ package com.example.myspringboot.Service;
 
 import com.example.myspringboot.Entity.User;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -12,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled
 @SpringBootTest
 class UserServiceTests {
 
@@ -28,7 +26,6 @@ class UserServiceTests {
     }
 
 
-    @Disabled
     @ParameterizedTest
     @CsvSource({
             "1,1,2",
