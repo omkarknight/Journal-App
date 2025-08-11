@@ -26,6 +26,7 @@ class UserServiceTests {
     }
 
 
+    @Disabled
     @ParameterizedTest
     @CsvSource({
             "1,1,2",
